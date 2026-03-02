@@ -3,9 +3,9 @@
 <package format="3">
   <name>husky_description</name>
   <version>0.0.0</version>
-  <description>TODO: Package description</description>
+  <description>Husky robot description and Gazebo simulation package for ROS 2.</description>
   <maintainer email="akr.workspace@gmail.com">akr</maintainer>
-  <license>TODO: License declaration</license>
+  <license>Apache-2.0</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
