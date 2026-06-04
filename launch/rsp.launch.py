@@ -29,21 +29,24 @@ def generate_launch_description():
         parameters=[params]
     )
 
-    # Create a joint_state_publisher node for the wheels
-    node_joint_state_publisher = Node(
-        package='joint_state_publisher',
-        executable='joint_state_publisher',
-        output='screen',
-        parameters=[params]
-    )
-
-
     # Launch!
+    # Note: joint_state_publisher is intentionally omitted here.
+    # In Gazebo simulation, libgazebo_ros_joint_state_publisher (in gazebo.control.xacro)
+    # publishes real joint positions and velocities from physics — joint_state_publisher
+    # would override those with zeros, breaking wheel odometry and TF.
+
+    # # Create a joint_state_publisher node for the wheels
+    # node_joint_state_publisher = Node(
+    #     package='joint_state_publisher',
+    #     executable='joint_state_publisher',
+    #     output='screen',
+    #     parameters=[params]
+    # )
+
     return LaunchDescription([
         DeclareLaunchArgument(
             'use_sim_time',
             default_value='false',
             description='Use sim time if true'),
         node_robot_state_publisher,
-        node_joint_state_publisher
     ])
