@@ -1,0 +1,109 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <joint name="imu_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="imu_link"/>
+        <origin xyz="0 0 0.1" rpy="0 0 0"/>
+    </joint>
+
+    <link name="imu_link">
+        <visual>
+            <geometry>
+                <box size="0.05 0.05 0.02"/>
+            </geometry>
+            <material name="blue">
+                <color rgba="0 0 1.0 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.05 0.05 0.02"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="0.05"/>
+            <inertia ixx="0.000012083" ixy="0" ixz="0"
+                     iyy="0.000012083" iyz="0"
+                     izz="0.000020833"/>
+        </inertial>
+    </link>
+
+    <gazebo reference="imu_link">
+        <material>Gazebo/Blue</material>
+
+        <sensor name="imu_sensor" type="imu">
+            <always_on>true</always_on>
+            <update_rate>100</update_rate>
+            <visualize>true</visualize>
+
+            <imu>
+                <angular_velocity>
+                    <x>
+                        <noise type="gaussian">
+                            <mean>0.0</mean>
+                            <stddev>1e-3</stddev>
+                            <bias_mean>1e-5</bias_mean>
+                            <bias_stddev>1e-6</bias_stddev>
+                        </noise>
+                    </x>
+                    <y>
+                        <noise type="gaussian">
+                            <mean>0.0</mean>
+                            <stddev>1e-3</stddev>
+                            <bias_mean>1e-5</bias_mean>
+                            <bias_stddev>1e-6</bias_stddev>
+                        </noise>
+                    </y>
+                    <z>
+                        <noise type="gaussian">
+                            <mean>0.0</mean>
+                            <stddev>1e-3</stddev>
+                            <bias_mean>1e-5</bias_mean>
+                            <bias_stddev>1e-6</bias_stddev>
+                        </noise>
+                    </z>
+                </angular_velocity>
+                <linear_acceleration>
+                    <x>
+                        <noise type="gaussian">
+                            <mean>0.0</mean>
+                            <stddev>1e-2</stddev>
+                            <bias_mean>0.01</bias_mean>
+                            <bias_stddev>0.001</bias_stddev>
+                        </noise>
+                    </x>
+                    <y>
+                        <noise type="gaussian">
+                            <mean>0.0</mean>
+                            <stddev>1e-2</stddev>
+                            <bias_mean>0.01</bias_mean>
+                            <bias_stddev>0.001</bias_stddev>
+                        </noise>
+                    </y>
+                    <z>
+                        <noise type="gaussian">
+                            <mean>0.0</mean>
+                            <stddev>1e-2</stddev>
+                            <bias_mean>0.01</bias_mean>
+                            <bias_stddev>0.001</bias_stddev>
+                        </noise>
+                    </z>
+                </linear_acceleration>
+            </imu>
+
+            <plugin name="imu_plugin" filename="libgazebo_ros_imu_sensor.so">
+                <ros>
+                    <argument>~/out:=imu/data</argument>
+                </ros>
+                <initial_orientation_as_reference>false</initial_orientation_as_reference>
+                <!-- Non-zero covariance so robot_localization treats orientation
+                     as a measurement with realistic uncertainty, not perfect truth -->
+                <orientation_covariance_diagonal>0.0017 0.0017 0.0017</orientation_covariance_diagonal>
+            </plugin>
+
+        </sensor>
+    </gazebo>
+
+</robot>
