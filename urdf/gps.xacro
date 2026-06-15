@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <joint name="gps_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="gps_link"/>
+        <origin xyz="0 0 0.15" rpy="0 0 0"/>
+    </joint>
+
+    <link name="gps_link">
+        <visual>
+            <geometry>
+                <cylinder radius="0.02" length="0.03"/>
+            </geometry>
+            <material name="black">
+                <color rgba="0.1 0.1 0.1 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <cylinder radius="0.02" length="0.03"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="0.05"/>
+            <inertia ixx="0.000012083" ixy="0" ixz="0"
+                     iyy="0.000012083" iyz="0"
+                     izz="0.000020833"/>
+        </inertial>
+    </link>
+
+    <gazebo reference="gps_link">
+        <material>Gazebo/Black</material>
+
+        <sensor name="gps_sensor" type="gps">
+            <always_on>true</always_on>
+            <update_rate>10</update_rate>
+
+            <gps>
+                <position_sensing>
+                    <horizontal>
+                        <noise type="gaussian">
+                            <mean>0.0</mean>
+                            <stddev>0.5</stddev>
+                        </noise>
+                    </horizontal>
+                    <vertical>
+                        <noise type="gaussian">
+                            <mean>0.0</mean>
+                            <stddev>1.0</stddev>
+                        </noise>
+                    </vertical>
+                </position_sensing>
+            </gps>
+
+            <plugin name="gps_plugin" filename="libgazebo_ros_gps_sensor.so">
+                <ros>
+                    <argument>~/out:=gps/fix</argument>
+                </ros>
+            </plugin>
+
+        </sensor>
+    </gazebo>
+
+</robot>
