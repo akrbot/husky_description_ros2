@@ -37,18 +37,22 @@
             <always_on>true</always_on>
             <update_rate>10</update_rate>
 
+            <!-- RTK-grade GPS: ideal fixed-solution accuracy. Horizontal noise
+                 is ~10 cm (1σ), the practical best case for an RTK receiver.
+                 Vertical is ~2× horizontal, as is typical for RTK. This is the
+                 clean baseline; the gps_fault_injector degrades it at runtime. -->
             <gps>
                 <position_sensing>
                     <horizontal>
                         <noise type="gaussian">
                             <mean>0.0</mean>
-                            <stddev>0.5</stddev>
+                            <stddev>0.1</stddev>
                         </noise>
                     </horizontal>
                     <vertical>
                         <noise type="gaussian">
                             <mean>0.0</mean>
-                            <stddev>1.0</stddev>
+                            <stddev>0.2</stddev>
                         </noise>
                     </vertical>
                 </position_sensing>
